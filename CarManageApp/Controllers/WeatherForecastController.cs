@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CarManageApp.DatabaseContext;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,11 @@ namespace CarManageApp.Controllers {
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly AppDbcontext _appDbcontext;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger) {
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, AppDbcontext appDbcontext) {
             _logger = logger;
+            _appDbcontext = appDbcontext;
         }
 
         [HttpGet]
@@ -29,6 +32,7 @@ namespace CarManageApp.Controllers {
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+            var test = _appDbcontext.Cars.Where(q => q.Id == 1).FirstOrDefault();
         }
     }
 }
