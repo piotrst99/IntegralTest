@@ -7,13 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CarManageApp.Services {
-    public class CarService {
+    public class CarService : ICarService {
         private AppDbcontext _dbContext;
-        private ICarService _carService;
 
-        public CarService(AppDbcontext appDbContext, ICarService carService) {
+        public CarService(AppDbcontext appDbContext) {
             _dbContext = appDbContext;
-            _carService = carService;
         }
 
         public Car GetCar(int carId) {
@@ -34,6 +32,16 @@ namespace CarManageApp.Services {
 
         public IEnumerable<string> GetModelsByMark(string mark) {
             return _dbContext.Cars.Where(x => x.Mark == mark).Select(y => y.Model).Distinct();
+        }
+
+        public int AddCar(Car car) {
+            _dbContext.Cars.Add(car);
+            return _dbContext.SaveChanges();
+        }
+
+        public int RemoveCar(int carId) {
+            _dbContext.Cars.Remove(_dbContext.Cars.Where(q=>q.Id == carId).FirstOrDefault());
+            return _dbContext.SaveChanges();
         }
     }
 }

@@ -16,20 +16,30 @@ namespace CarManageApp.Controllers {
     [ApiController]
     public class CarController : ControllerBase {
         //private readonly ILogger<Car> _logger;
-        //private readonly ICarService _carService;
+        private ICarService _carService;
 
         public CarController(
             //ILogger<Car> logger, 
-            //ICarService carService
+            ICarService carService
         ) {
             //_logger = logger;
-            //_carService = carService;
+            _carService = carService;
         }
 
         [HttpGet("GetCar")]
         public ActionResult<Car> GetCar(int carId) {
             //return Ok(_carService.GetCar(carId));
-            return Ok(null);
+            return _carService.GetCar(carId);
+        }
+
+        [HttpPost("AddCar")]
+        public ActionResult<int> AddCar(Car car) {
+            return _carService.AddCar(car);
+        }
+
+        [HttpDelete("RemoveCar")]
+        public ActionResult<int> Remove(int carId) {
+            return _carService.RemoveCar(carId);
         }
     }
 }

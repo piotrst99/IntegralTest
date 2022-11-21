@@ -12,5 +12,7 @@ namespace CarManageApp.Services {
         Car GetCarByRegisterNumber(string registerNumber);
         int GetCarCource(int carId);
         IEnumerable<string> GetModelsByMark(string mark);
+        int AddCar(Car car);
+        int RemoveCar(int carId);
     }
 }

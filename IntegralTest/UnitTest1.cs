@@ -1,11 +1,10 @@
 using System;
-//using Xunit;
 using NUnit;
 using NUnit.Framework;
 using CarManageApp.DatabaseContext;
 using NUnit.Framework.Internal;
 using Data.Entities;
-using CarManageApp.Controllers;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 // https://www.youtube.com/watch?v=xs8gNQjCXw0
@@ -16,7 +15,11 @@ using System.Linq;
 namespace IntegralTest {
     [TestFixture]
     public class UnitTest1 {
-        private readonly AppDbcontext _appDbContext;
+        private readonly AppDbcontext _appDbContext = new AppDbcontext(
+            options: new DbContextOptionsBuilder<AppDbcontext>()
+                .UseSqlServer("Server=localhost; Initial Catalog=CarDatabase; Integrated Security=True;")
+                .Options
+            );
 
         [Test, Isolated]
         public void Test1() {
@@ -31,7 +34,16 @@ namespace IntegralTest {
             _appDbContext.Cars.Add(car);
             var carCount = _appDbContext.Cars.Count(q => q.Id == car.Id);
             //Assert.That(carCount, Is.EqualTo(1));
+
+            //_carService.AddCar(car);
+            //var carCount2 = _carService.GetCar(car.Id);
+
             Assert.AreEqual(carCount, 1);
+        }
+
+        [Test]
+        public void Test2() {
+            Assert.AreEqual(0, 0);
         }
     }
 }
