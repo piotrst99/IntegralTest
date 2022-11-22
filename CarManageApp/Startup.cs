@@ -39,11 +39,12 @@ namespace CarManageApp {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CarManageApp", Version = "v1" });
             });
             services.AddDbContext<AppDbcontext>(option =>
-                option.UseSqlServer(Configuration.GetConnectionString("Car_Context"))
-            );
+                option.UseSqlServer(Configuration.GetConnectionString("Car_Context")));
+            
             //services.AddHttpContextAccessor();
             services.AddScoped<ICarService, CarService>();
-            services.AddScoped<AppDbcontext>();
+            //services.AddScoped<AppDbcontext>();
+
             //services.AddScoped<CarService>();
             //services.Add(new ServiceDescriptor(typeof(ICarService), typeof(CarService)));
             //services.Add(new ServiceDescriptor(typeof(ICarService), typeof(CarService), ServiceLifetime.Scoped));

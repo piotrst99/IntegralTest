@@ -15,20 +15,14 @@ namespace CarManageApp.Controllers {
     [Route("[controller]")]
     [ApiController]
     public class CarController : ControllerBase {
-        //private readonly ILogger<Car> _logger;
         private ICarService _carService;
 
-        public CarController(
-            //ILogger<Car> logger, 
-            ICarService carService
-        ) {
-            //_logger = logger;
+        public CarController(ICarService carService) {
             _carService = carService;
         }
 
         [HttpGet("GetCar")]
         public ActionResult<Car> GetCar(int carId) {
-            //return Ok(_carService.GetCar(carId));
             return _carService.GetCar(carId);
         }
 

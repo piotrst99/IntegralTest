@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CarManageApp.DatabaseContext {
     public class AppDbcontext : DbContext{
-        public AppDbcontext(DbContextOptions<AppDbcontext> options) : base(options){}
+        public AppDbcontext(DbContextOptions options) : base(options){}
 
         public DbSet<Car> Cars { get; set; }
     }

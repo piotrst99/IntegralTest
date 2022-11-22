@@ -16,37 +16,49 @@ using CarManageApp.Services;
 namespace IntegralTest {
     [TestFixture]
     public class UnitTest1 {
-        private AppDbcontext _appDbContext = new AppDbcontext(
+        private static AppDbcontext _appDbContext = new AppDbcontext(
             options: new DbContextOptionsBuilder<AppDbcontext>()
                 .UseSqlServer("Server=localhost; Initial Catalog=CarDatabase; Integrated Security=True;")
                 .Options
             );
-        private ICarService _carService;
+        private ICarService _carService = new CarService(_appDbContext);
 
         [Test, Isolated]
         public void Test1() {
+
             Car car = new Car() {
-                //Id = 1,
                 Mark = "Fiat",
                 Model = "Seicento",
                 Course = 123000,
                 RegisterNumber = "KN 12345"
             };
+
             _carService.AddCar(car);
-            //_appDbContext.Cars.Add(car);
-            //_appDbContext.SaveChanges();
             var carCount = _appDbContext.Cars.Count(q => q.Id == car.Id);
-            //Assert.That(carCount, Is.EqualTo(1));
-
-            //_carService.AddCar(car);
-            //var carCount2 = _carService.GetCar(car.Id);
-
             Assert.AreEqual(carCount, 1);
+            Assert.AreNotEqual(carCount, 0);
         }
 
         [Test]
         public void Test2() {
-            Assert.AreEqual(0, 0);
+            Car car = new Car() {
+                Mark = "Fiat",
+                Model = "Seicento",
+                Course = 123000,
+                RegisterNumber = "KN 12345"
+            };
+
+            var option = new DbContextOptionsBuilder<AppDbcontext>()
+                .UseSqlServer("Server=localhost; Initial Catalog=CarDatabase; Integrated Security=True;")
+                .Options;
+
+            using (var context = new AppDbcontext(option)) {
+                context.Add(car);
+                context.SaveChanges();
+                var carCount = _appDbContext.Cars.Count(q => q.Id == car.Id);
+                Assert.AreEqual(carCount, 1);
+                Assert.AreNotEqual(carCount, 0);
+            }
         }
     }
 }
