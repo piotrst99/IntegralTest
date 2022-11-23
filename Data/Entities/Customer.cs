@@ -7,14 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Data.Entities {
-    [Table(nameof(Car))]
-    public class Car {
+    [Table(nameof(Customer))]
+    public class Customer {
         [Key]
         public int Id { get; set; }
-        public string Mark { get; set; }
-        public string Model { get; set; }
-        public int Course { get; set; }
-        public string RegisterNumber { get; set; }
-        public int ProductionYear { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Address { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
     }
 }

@@ -16,7 +16,7 @@ using System.Collections.Generic;
 
 namespace IntegralTest {
     [TestFixture]
-    public class UnitTest1 {
+    public class CarIntegralTest {
         private static AppDbcontext _appDbContext = new AppDbcontext(
             options: new DbContextOptionsBuilder<AppDbcontext>()
                 .UseSqlServer("Server=localhost; Initial Catalog=CarDatabase; Integrated Security=True;")
@@ -25,7 +25,7 @@ namespace IntegralTest {
         private ICarService _carService = new CarService(_appDbContext);
 
         [Test, Isolated]
-        public void Test1() {
+        public void AddCarToDatabase_AddCar_ShouldBeOk() {
             Car car = new Car() {
                 Mark = "Fiat",
                 Model = "Seicento",
@@ -44,7 +44,7 @@ namespace IntegralTest {
         }
 
         [Test, Isolated]
-        public void Test1_1() {
+        public void AddMoreCarToDatabase_AddCar_ShouldBeOk() {
             Car car = new Car() {
                 Mark = "Fiat",
                 Model = "Seicento",
@@ -74,7 +74,7 @@ namespace IntegralTest {
         }
 
         [Test, Isolated]
-        public void Test1_2() {
+        public void RemoveCarToDatabase_RemoveCar_ShouldBeOk() {
             Car car = new Car() {
                 Id = 17,
                 Mark = "Ford",
@@ -91,33 +91,6 @@ namespace IntegralTest {
             Assert.AreNotEqual(carCount, 1);
             Assert.AreEqual(carItem, null);
             Assert.AreNotEqual(carItem, car);
-        }
-
-        [Test, Isolated]
-        public void Test2() {
-            Car car = new Car() {
-                Mark = "Fiat",
-                Model = "Seicento",
-                Course = 123000,
-                RegisterNumber = "KN 12345"
-            };
-
-            var option = new DbContextOptionsBuilder<AppDbcontext>()
-                .UseSqlServer("Server=localhost; Initial Catalog=CarDatabase; Integrated Security=True;")
-                .Options;
-
-            using (var context = new AppDbcontext(option)) {
-                context.Add(car);
-                context.SaveChanges();
-
-                int carCount = context.Cars.Count(q => q.Id == car.Id);
-                Car carItem = context.Cars.Where(q => q.Id == car.Id).FirstOrDefault();
-
-                Assert.AreEqual(carCount, 1);
-                Assert.AreNotEqual(carCount, 0);
-                Assert.AreEqual(carItem, car);
-                Assert.AreNotEqual(carItem, null);
-            }
         }
     }
 }

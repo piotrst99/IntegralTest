@@ -43,5 +43,9 @@ namespace CarManageApp.Services {
             _dbContext.Cars.Remove(_dbContext.Cars.Where(q=>q.Id == carId).FirstOrDefault());
             return _dbContext.SaveChanges();
         }
+
+        public IEnumerable<Car> GetCarsByProductionYear(int year) {
+            throw new NotImplementedException();
+        }
     }
 }

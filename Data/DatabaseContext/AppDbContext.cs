@@ -10,5 +10,13 @@ namespace CarManageApp.DatabaseContext {
         public AppDbcontext(DbContextOptions options) : base(options){}
 
         public DbSet<Car> Cars { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<CarRepair> CarRepairs { get; set; }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            modelBuilder.Entity<CarRepair>()
+                .Ignore(x=>x.Car)
+                .Ignore(x=>x.Customer);
+        }
     }
 }
