@@ -45,7 +45,7 @@ namespace CarManageApp.Services {
         }
 
         public IEnumerable<Car> GetCarsByProductionYear(int year) {
-            throw new NotImplementedException();
+            return _dbContext.Cars.Where(q => q.ProductionYear == year);
         }
     }
 }

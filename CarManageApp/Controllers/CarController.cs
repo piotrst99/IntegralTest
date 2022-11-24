@@ -9,10 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-// https://www.fearofoblivion.com/asp-net-core-integration-testing
-
 namespace CarManageApp.Controllers {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class CarController : ControllerBase {
         private ICarService _carService;
@@ -26,13 +24,33 @@ namespace CarManageApp.Controllers {
             return _carService.GetCar(carId);
         }
 
+        [HttpGet("GetCarsByProductionYear")]
+        public ActionResult<IEnumerable<Car>> GetCarsByProductionYear(int year) {
+            return _carService.GetCarsByProductionYear(year).ToList();
+        }
+
+        [HttpGet("GetCarByRegisterNumber")]
+        public ActionResult<Car> GetCarByRegisterNumber(string registerNumber) {
+            return _carService.GetCarByRegisterNumber(registerNumber);
+        }
+
+        [HttpGet("GetCarCource")]
+        public ActionResult<int> GetCarByRegisterNumber(int carId) {
+            return _carService.GetCarCource(carId);
+        }
+
+        [HttpGet("GetModelsByMark")]
+        public ActionResult<IEnumerable<string>> GetModelsByMark(string mark) {
+            return _carService.GetModelsByMark(mark).ToList();
+        }
+
         [HttpPost("AddCar")]
-        public ActionResult<int> AddCar(Car car) {
-            return _carService.AddCar(car);
+        public ActionResult<int> AddCar(int carId) {
+            return _carService.RemoveCar(carId);
         }
 
         [HttpDelete("RemoveCar")]
-        public ActionResult<int> Remove(int carId) {
+        public ActionResult<int> RemoveCar(int carId) {
             return _carService.RemoveCar(carId);
         }
     }
