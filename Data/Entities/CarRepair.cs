@@ -13,9 +13,10 @@ namespace Data.Entities {
         public int Id { get; set; }
         public int CarId { get; set; }
         public int CustomerId { get; set; }
-        public DateTime RepairDate { get; set; }
+        public string RepairDate { get; set; }
         public int Cost { get; set; }
         public bool IsRepair { get; set; }
+        public string Description { get; set; }
         public virtual Customer Customer { get; set; }
         public virtual Car Car { get; set; }
     }

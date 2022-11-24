@@ -9,11 +9,6 @@ using System.Linq;
 using CarManageApp.Services;
 using System.Collections.Generic;
 
-// https://www.youtube.com/watch?v=xs8gNQjCXw0
-// https://code-maze.com/aspnet-core-integration-testing/
-// https://www.modestprogrammer.pl/testujemy-operacje-na-bazie-danych-wprowadzenie-do-testow-integracyjnych-w-dot-net
-// https://www.fearofoblivion.com/asp-net-core-integration-testing
-
 namespace IntegralTest {
     [TestFixture]
     public class CarIntegralTest {
@@ -65,7 +60,7 @@ namespace IntegralTest {
             Car carItem1 = carList.FirstOrDefault(q => q.Id == car.Id);
             Car carItem2 = carList.FirstOrDefault(q => q.Id == car2.Id);
 
-            Assert.AreEqual(carList.Count, 2); //
+            Assert.AreEqual(carList.Count, 12);
             Assert.AreNotEqual(carList.Count, 0);
             Assert.AreEqual(carItem1, car);
             Assert.AreNotEqual(carItem1, null);
@@ -75,22 +70,69 @@ namespace IntegralTest {
 
         [Test, Isolated]
         public void RemoveCarToDatabase_RemoveCar_ShouldBeOk() {
-            Car car = new Car() {
-                Id = 17,
-                Mark = "Ford",
-                Model = "Fiesta",
-                Course = 4444,
-                RegisterNumber = "KLI 6969"
-            };
-            _carService.RemoveCar(17);
+            _carService.RemoveCar(10);
 
-            int carCount = _appDbContext.Cars.Count(q => q.Id == car.Id);
-            Car carItem = _appDbContext.Cars.FirstOrDefault(q => q.Id == car.Id);
+            int carCount = _appDbContext.Cars.Count(q => q.Id == 10);
+            Car carItem = _appDbContext.Cars.FirstOrDefault(q => q.Id == 10);
 
             Assert.AreEqual(carCount, 0);
             Assert.AreNotEqual(carCount, 1);
             Assert.AreEqual(carItem, null);
-            Assert.AreNotEqual(carItem, car);
+        }
+
+        [Test]
+        public void GetCarFromDatabase_GetCar_ShouldBeOk() {
+            Car car = _carService.GetCar(5);
+            Assert.AreEqual(car.Id, 5);
+            Assert.AreNotEqual(car, null);
+
+            Car car2 = _carService.GetCar(100);
+            Assert.AreEqual(car2, null);
+        }
+
+        [Test]
+        public void GetCarsFromDatabase_GetCars_ShouldBeOk() {
+            IEnumerable<Car> cars = _carService.GetCars();
+            Assert.AreEqual(cars.Count(), 10);
+        }
+
+        [Test]
+        public void GetEmailFromDatabase_GetCarsByProductionYear_ShouldBeOk() {
+            IEnumerable<Car> carsList = _carService.GetCarsByProductionYear(2022);
+            Assert.AreEqual(carsList.Count(), 2);
+
+            IEnumerable<Car> carsList2 = _carService.GetCarsByProductionYear(2010);
+            Assert.AreEqual(carsList2.Count(), 1);
+
+            IEnumerable<Car> carsList3 = _carService.GetCarsByProductionYear(2023);
+            Assert.AreEqual(carsList3.Count(), 0);
+        }
+
+        [Test]
+        public void GetCarFromDatabase_GetCarByRegisterNumber_ShouldBeOk() {
+            Car car = _carService.GetCarByRegisterNumber("RJA 23464");
+            Assert.AreEqual(car.RegisterNumber, "RJA 23464");
+
+            Car car2 = _carService.GetCarByRegisterNumber("WW 12345");
+            Assert.AreEqual(car2, null);
+        }
+
+        [Test]
+        public void GetCarCourseFromDatabase_GetCarCource_ShouldBeOk() {
+            int carCourse = _carService.GetCarCource(3);
+            Assert.AreEqual(carCourse, 124765);
+
+            int carCourse2 = _carService.GetCarCource(11);
+            Assert.AreEqual(carCourse2, 0);
+        }
+
+        [Test]
+        public void GetModelsByMarkFromDatabase_GetModelsByMark_ShouldBeOk() {
+            IEnumerable<string> models = _carService.GetModelsByMark("Audi");
+            Assert.AreEqual(models.Count(), 2);
+
+            IEnumerable<string> models2 = _carService.GetModelsByMark("Skoda");
+            Assert.AreEqual(models2.Count(), 0);
         }
     }
 }
