@@ -12,6 +12,7 @@ using System.Collections.Generic;
 namespace IntegralTest {
     [TestFixture]
     public class CarIntegralTest {
+        // tworzenie po³¹czenia do bazy danych
         private static AppDbcontext _appDbContext = new AppDbcontext(
             options: new DbContextOptionsBuilder<AppDbcontext>()
                 .UseSqlServer("Server=localhost; Initial Catalog=CarDatabase; Integrated Security=True;")
@@ -19,6 +20,7 @@ namespace IntegralTest {
             );
         private ICarService _carService = new CarService(_appDbContext);
 
+        // dodanie obiektu klasy Car do bazy danych - powinien zwrócic rekord z bazy danych
         [Test, Isolated]
         public void AddCarToDatabase_AddCar_ShouldBeOk() {
             Car car = new Car() {
@@ -38,6 +40,7 @@ namespace IntegralTest {
             Assert.AreNotEqual(carItem, null);
         }
 
+        // dodanie wielu obiektu klasy Car do bazy danych - powinien zwrócic rekordy oraz ich liczbê z bazy danych
         [Test, Isolated]
         public void AddMoreCarToDatabase_AddCar_ShouldBeOk() {
             Car car = new Car() {
@@ -68,6 +71,7 @@ namespace IntegralTest {
             Assert.AreNotEqual(carItem2, null);
         }
 
+        // usuwa obiekt klasy Car z bazy danych - powinien zwrócic null z bazy danych
         [Test, Isolated]
         public void RemoveCarToDatabase_RemoveCar_ShouldBeOk() {
             _carService.RemoveCar(10);
@@ -80,6 +84,7 @@ namespace IntegralTest {
             Assert.AreEqual(carItem, null);
         }
 
+        // usuwa obiekty klasy Car z bazy danych - powinien zwrócic null oraz wartosc z bazy danych
         [Test]
         public void GetCarFromDatabase_GetCar_ShouldBeOk() {
             Car car = _carService.GetCar(5);
@@ -90,12 +95,14 @@ namespace IntegralTest {
             Assert.AreEqual(car2, null);
         }
 
+        // pobiera wszystkie obiekty klasy Car z bazy danych - powinien zwrócic liste z liczba obiektow z bazy danych
         [Test]
         public void GetCarsFromDatabase_GetCars_ShouldBeOk() {
             IEnumerable<Car> cars = _carService.GetCars();
             Assert.AreEqual(cars.Count(), 10);
         }
 
+        // pobiera obiekty klasy Car z bazy danych na podstawie roku produkcji - powinien zwrócic listê z liczba obiektowz bazy danych
         [Test]
         public void GetEmailFromDatabase_GetCarsByProductionYear_ShouldBeOk() {
             IEnumerable<Car> carsList = _carService.GetCarsByProductionYear(2022);
@@ -108,6 +115,7 @@ namespace IntegralTest {
             Assert.AreEqual(carsList3.Count(), 0);
         }
 
+        // pobiera obekt z klasy Car z bazy danych - powinien zwrócic wartosc oraz null
         [Test]
         public void GetCarFromDatabase_GetCarByRegisterNumber_ShouldBeOk() {
             Car car = _carService.GetCarByRegisterNumber("RJA 23464");
@@ -117,6 +125,7 @@ namespace IntegralTest {
             Assert.AreEqual(car2, null);
         }
 
+        // pobranie przebiegu z bazy dancyh - powienien zwrocic wartosc
         [Test]
         public void GetCarCourseFromDatabase_GetCarCource_ShouldBeOk() {
             int carCourse = _carService.GetCarCource(3);
@@ -126,6 +135,7 @@ namespace IntegralTest {
             Assert.AreEqual(carCourse2, 0);
         }
 
+        // pobranie listy modelow na posatawie marki z bazy dancyh - powienien zwrocic listê oraz liczbe obiektow
         [Test]
         public void GetModelsByMarkFromDatabase_GetModelsByMark_ShouldBeOk() {
             IEnumerable<string> models = _carService.GetModelsByMark("Audi");

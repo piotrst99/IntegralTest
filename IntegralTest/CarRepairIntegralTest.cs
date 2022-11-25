@@ -13,6 +13,7 @@ using CarManageApp.Services;
 namespace IntegralTest {
     [TestFixture]
     public class CarRepairIntegralTest {
+        // tworzenie połączenia do bazy danych
         private static AppDbcontext _appDbContext = new AppDbcontext(
             options: new DbContextOptionsBuilder<AppDbcontext>()
                 .UseSqlServer("Server=localhost; Initial Catalog=CarDatabase; Integrated Security=True;")
@@ -20,6 +21,7 @@ namespace IntegralTest {
             );
         private ICarRepairService _carRepairService = new CarRepairService(_appDbContext);
         
+        // poniera dane dotyczacej naprawy pojazdu - powinien zwrocic obiekt klasy CAr
         [Test]
         public void GetCarRepairFromDatabase_GetCarRepair_ShouldBeOk() {
             CarRepair carRepair = _appDbContext.CarRepairs.Where(q => q.Id == 2).FirstOrDefault();
@@ -28,6 +30,7 @@ namespace IntegralTest {
             Assert.AreEqual(car.Id, 3);
         }
 
+        // pobranie lise napraw w danym dniu - powinien zwroicic liste oraz liczbw obiektow
         [Test]
         public void GetCarRepairByDateFromDatabase_GetCarRepairsByRepairDate_ShouldBeOk() {
             IEnumerable<CarRepair> carRepairs = _appDbContext.CarRepairs.Where(q => q.RepairDate == "2022-11-24");
@@ -40,6 +43,7 @@ namespace IntegralTest {
             Assert.AreEqual(carRepairs3.Count(), 0);
         }
 
+        // pobranie kosztu naprawy z bazy danych - powinien zwrocic wartosc
         [Test]
         public void GetCostRepairFromDatabase_GetCost_ShouldBeOk() {
             int costRepair = _appDbContext.CarRepairs.Where(q => q.CarId == 10).FirstOrDefault().Cost;
@@ -49,6 +53,7 @@ namespace IntegralTest {
             Assert.IsTrue(!costRepair2.HasValue);
         }
 
+        // pobranie pojazdow na podstawie id klienta - powinien zwrocic liczbe pojazdow
         [Test]
         public void GetCarsRepairFromDatabase_GetCarsByCustomerId_ShouldBeOk() {
             int carRepairsCount = _appDbContext.CarRepairs.Count(q => q.CustomerId == 1);
@@ -58,6 +63,7 @@ namespace IntegralTest {
             Assert.IsTrue(carRepairsCount2 == 0);
         }
 
+        // dodanie danyc naprawy pojazdu do bazy danych - powinien zwrocic warosc
         [Test, Isolated]
         public void AddCarRepairToDatabase_AddCarRepair_ShouldBeOk() {
             CarRepair carRepair = new CarRepair {
@@ -76,6 +82,7 @@ namespace IntegralTest {
             Assert.AreEqual(countOfRepairsAfter, 8);
         }
 
+        // akrualizuje dane naprawy - dane powinny sie roznic 
         [Test, Isolated]
         public void UpdateCarRepairToDatabase_UpdateCarRepair_ShouldBeOk() {
             CarRepair carRepairToUpdate = new CarRepair {

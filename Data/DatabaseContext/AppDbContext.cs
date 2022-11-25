@@ -13,6 +13,7 @@ namespace CarManageApp.DatabaseContext {
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CarRepair> CarRepairs { get; set; }
         
+        // tworzenie modelu z ograniczeniami
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<CarRepair>()
                 .Ignore(x=>x.Car)

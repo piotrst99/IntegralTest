@@ -13,6 +13,7 @@ using CarManageApp.Services;
 namespace IntegralTest {
     [TestFixture]
     public class CustomerIntegralTest {
+        // tworzenie połączenia do bazy danych
         private static AppDbcontext _appDbContext = new AppDbcontext(
             options: new DbContextOptionsBuilder<AppDbcontext>()
                 .UseSqlServer("Server=localhost; Initial Catalog=CarDatabase; Integrated Security=True;")
@@ -20,6 +21,7 @@ namespace IntegralTest {
             );
         private ICustomerService _customerService = new CustomerService(_appDbContext);
 
+        // zwraca klienta z bazy danych - powinien zwrocic wartosc oraz null
         [Test]
         public void GetCustomerFromDatabase_GetCustomer_ShouldBeOk() {
             Customer customer = _customerService.GetCustomer(4);
@@ -30,12 +32,14 @@ namespace IntegralTest {
             Assert.AreEqual(customer2, null);
         }
 
+        // zwraca wiele klientow z bazy danych - powinien zwrocic liste oraz liczbe obiektow
         [Test]
         public void GetCustomersFromDatabase_GetCustomers_ShouldBeOk() {
             IEnumerable<Customer> customers = _customerService.GetCustomers();
             Assert.AreEqual(customers.Count(), 6);
         }
 
+        // zwraca adres email z bazy danych - powinien zwrocic wartosc
         [Test]
         public void GetEmailFromDatabase_GetEmail_ShouldBeOk() {
             string customerEmail = _customerService.GetEmail("Jan", "Nowak");
@@ -48,6 +52,7 @@ namespace IntegralTest {
             Assert.AreEqual(customerEmail3, null);
         }
 
+        // dodanie obiektu klasy Customer do bazy danych - powinien zwrócic rekord z bazy danych
         [Test, Isolated]
         public void AddCustomerToDatabase_AddCustomer_ShouldBeOk() {
             Customer customer = new Customer {
@@ -65,6 +70,7 @@ namespace IntegralTest {
             Assert.AreEqual(countOfCustomersAfter, 7);
         }
 
+        // dodanie wielu obiektu klasy Customer do bazy danych - powinien zwrócic rekordy oraz ich liczbę z bazy danych
         [Test, Isolated]
         public void AddMoreCustomerToDatabase_AddCustomer_ShouldBeOk() {
             Customer customer = new Customer {
@@ -91,6 +97,7 @@ namespace IntegralTest {
             Assert.AreEqual(countOfCustomersAfter, 8);
         }
 
+        // usuwa obiekt klasy Customer   z bazy danych - powinien zwrócic null z bazy danych
         [Test, Isolated]
         public void RemoveCustomerToDatabase_RemoveCustomer_ShouldBeOk() {
             int countOfCustomersBefore = _appDbContext.Customers.Count();
@@ -105,6 +112,7 @@ namespace IntegralTest {
             Assert.AreEqual(customer, null);
         }
 
+        // usuwa obiekty klasy Customer z bazy danych - powinien zwrócic null oraz wartosc z bazy danych
         [Test, Isolated]
         public void RemovemoreCustomerToDatabase_RemoveCustomer_ShouldBeOk() {
             int countOfCustomersBefore = _appDbContext.Customers.Count();

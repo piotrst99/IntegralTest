@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 
 namespace IntegralTest {
+    // klasa tworzaca atrybut, ktory jest wykorzystany do tranzakcji modyfikowania bazy danych
     public class Isolated : Attribute, ITestAction{
         private TransactionScope _transactionScope;
 
